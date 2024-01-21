@@ -31,9 +31,9 @@ app.get(["/view/avocati"], function(req, res){
     client.query(
         `SELECT * FROM avocat`, function(queryErr, queryRes){
             if(queryErr){
-                throw queryErr;
+                res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
-                console.log(queryRes.rows);
+                //console.log(queryRes.rows);
                 res.render("pages/avocati", {pageTitle: 'Welcome to My Homepage', entries: queryRes.rows, nr_rez:queryRes.rowCount});
             }
         });
@@ -43,9 +43,9 @@ app.get(["/view/contracte"], function(req, res){
     client.query(
         `SELECT * FROM contract`, function(queryErr, queryRes){
             if(queryErr){
-                throw queryErr;
+                res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
-                console.log(queryRes.rows);
+                //console.log(queryRes.rows);
                 res.render("pages/contracte", {pageTitle: 'Welcome to My Homepage', entries: queryRes.rows, nr_rez:queryRes.rowCount});
             }
         });
@@ -55,9 +55,9 @@ app.get(["/view/clienti"], function(req, res){
     client.query(
         `SELECT * FROM client`, function(queryErr, queryRes){
             if(queryErr){
-                throw queryErr;
+                res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
-                console.log(queryRes.rows);
+                //console.log(queryRes.rows);
                 res.render("pages/clienti", {pageTitle: 'Welcome to My Homepage', entries: queryRes.rows, nr_rez:queryRes.rowCount});
             }
         });
@@ -104,8 +104,8 @@ app.post('/create/avocat', async (req, res) => {
             await client.query(query, values);
             res.redirect('/view/avocati'); // Redirect to the page displaying all entries
         } catch (error) {
-            console.error(error);
-            res.status(500).send('Eroare.');
+            //console.error(error);
+            res.render("pages/eroare", {eroare:String(error.detail)});
         }
     });
 });
@@ -150,8 +150,8 @@ app.post('/create/client', async (req, res) => {
             await client.query(query, values);
             res.redirect('/view/clienti'); // Redirect to the page displaying all entries
         } catch (error) {
-            console.error(error);
-            res.status(500).send('Eroare.');
+            //console.error(error);
+            res.render("pages/eroare", {eroare:String(error.detail)});
         }
     });
 });
@@ -165,8 +165,8 @@ app.post('/create/contract', async (req, res) => {
 
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            console.error(err);
-            res.status(500).send('Eroare');
+            //console.error(err);
+            res.render("pages/eroare", {eroare:String(err)});
             return;
         }
 
@@ -180,15 +180,18 @@ app.post('/create/contract', async (req, res) => {
         } = fields;
 
         const query = `
-            INSERT INTO contract (id_avocat_ctr, id_client_ctr, valoare, data_start, ${data_sfarsit ? 'data_sfarsit,' : NULL} judecatorie)
-            VALUES ($1, $2, $3, $4, ${data_sfarsit ? '$5,' : ''} $6)
+            INSERT INTO contract (id_avocat_ctr, id_client_ctr, valoare, data_start, data_sfarsit, judecatorie)
+            VALUES ($1, $2, $3, $4, $5, $6)
         `;
 
-        const values = [id_avocat_ctr, id_client_ctr, valoare, data_start, data_sfarsit, judecatorie];
+        values = [id_avocat_ctr, id_client_ctr, valoare, data_start, data_sfarsit, judecatorie];
 
         values.forEach((element, index) => {
             const element_clean = String(element).replace(/[{}"]/g, '');
             values[index] = element_clean;
+            if(index == 4 && element_clean == ''){
+                values[index] = null;
+            }
         });
 
 
@@ -197,10 +200,54 @@ app.post('/create/contract', async (req, res) => {
             res.redirect('/view/contracte'); // Redirect to the page displaying all entries
         } catch (error) {
             console.error(error);
-            res.status(500).send('Eroare.');
+            //res.status(500).send('Eroare.');
+            res.render("pages/eroare", {eroare:String(error.detail)});
         }
     });
 });
+
+app.post("/delete/avocat/:id", function(req, res){
+    const avocatId = req.params.id;
+    console.log('Deleting avocat with id:', avocatId);
+    client.query('DELETE FROM avocat WHERE id_avocat = $1', [avocatId], function(err, rez){
+        if(err){
+            //console.error(err);
+            res.render("pages/eroare", {eroare:String(err)});
+            return;
+        }
+        console.log('Delete successful');
+        res.redirect("/view/avocati");
+    });
+});
+
+
+app.post("/delete/client/:id", function(req, res){
+    const clientId = req.params.id;
+    client.query('DELETE FROM client WHERE id_client = $1', [clientId], function(err, rez){
+        if(err){
+            //console.error(err);
+            res.render("pages/eroare", {eroare:String(err)});
+            return;
+        }
+        console.log('Delete successful');
+        res.redirect("/view/clienti");
+    });
+});
+
+
+app.post("/delete/contract/:id", function(req, res){
+    const contractId = req.params.id;
+    client.query('DELETE FROM contract WHERE id_contract = $1', [contractId], function(err, rez){
+        if(err){
+            //console.error(err);
+            res.render("pages/eroare", {eroare:String(err)});
+            return;
+        }
+        console.log('Delete successful');
+        res.redirect("/view/contracte");
+    });
+});
+
 
 app.listen(PORT, ()=>{
     console.log(`Serverul a pornit, port: ${PORT}`);

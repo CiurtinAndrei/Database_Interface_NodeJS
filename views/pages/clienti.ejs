@@ -12,6 +12,7 @@
                 <th>CNP</th>
                 <th>Telefon</th>
                 <th>Adresa</th>
+                <th>Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,11 @@
                     <td><%= entries[i].cnp %></td>
                     <td><%= entries[i].telefon %></td>
                     <td><%= entries[i].adresa %></td>
+                    <td>
+                        <form action="/delete/client/<%= entries[i].id_client %>" method="post">
+                            <button type="submit">DELETE</button>
+                        </form>
+                    </td>
                 </tr>
             <% } %>
         </tbody>

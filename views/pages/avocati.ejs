@@ -13,6 +13,7 @@
                 <th>Telefon</th>
                 <th>Specializare</th>
                 <th>Speta</th>
+                <th>Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,11 @@
                     <td><%= entries[i].telefon %></td>
                     <td><%= entries[i].specializare %></td>
                     <td><%= entries[i].speta %></td>
+                    <td>
+                        <form action="/delete/avocat/<%= entries[i].id_avocat %>" method="post">
+                            <button type="submit">DELETE</button>
+                        </form>
+                    </td>
                 </tr>
             <% } %>
         </tbody>
