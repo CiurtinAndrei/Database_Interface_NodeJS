@@ -1,0 +1,29 @@
+<%- include("../fragments/header.ejs") %>
+
+<div>
+    <h2>Create New Entry</h2>
+    <form action="/create/contract" method="post" enctype="multipart/form-data">
+        <label for="id_avocat_ctr">ID Avocat:</label>
+        <input type="number" name="id_avocat_ctr" required>
+
+        <label for="id_client_ctr">ID Client:</label>
+        <input type="number" name="id_client_ctr" required>
+
+        <label for="valoare">Valoare:</label>
+        <input type="number" name="valoare" step="0.01" required>
+
+        <label for="data_start">Data Start:</label>
+        <input type="date" name="data_start" required>
+
+        <label for="data_sfarsit">Data Sfarsit:</label>
+        <input type="date" name="data_sfarsit">
+
+        <label for="judecatorie">Judecatorie:</label>
+        <input type="text" name="judecatorie" required>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+
+<%- include("../fragments/footer.ejs") %>

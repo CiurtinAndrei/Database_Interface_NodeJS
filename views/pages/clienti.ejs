@@ -1,0 +1,33 @@
+<%- include("../fragments/header.ejs") %>
+
+<div>
+    <h2>Database Entries</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Client</th>
+                <th>Nume</th>
+                <th>Prenume</th>
+                <th>Email</th>
+                <th>CNP</th>
+                <th>Telefon</th>
+                <th>Adresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0; i < entries.length; i++) { %>
+                <tr>
+                    <td><%= entries[i].id_client %></td>
+                    <td><%= entries[i].nume %></td>
+                    <td><%= entries[i].prenume %></td>
+                    <td><%= entries[i].email %></td>
+                    <td><%= entries[i].cnp %></td>
+                    <td><%= entries[i].telefon %></td>
+                    <td><%= entries[i].adresa %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include("../fragments/footer.ejs") %>

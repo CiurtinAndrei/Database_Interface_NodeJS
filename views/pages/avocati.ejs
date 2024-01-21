@@ -1,0 +1,35 @@
+<%- include("../fragments/header.ejs") %>
+
+<div>
+    <h2>Database Entries</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Avocat</th>
+                <th>Nume</th>
+                <th>Prenume</th>
+                <th>Email</th>
+                <th>CNP</th>
+                <th>Telefon</th>
+                <th>Specializare</th>
+                <th>Speta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0; i < entries.length; i++) { %>
+                <tr>
+                    <td><%= entries[i].id_avocat %></td>
+                    <td><%= entries[i].nume %></td>
+                    <td><%= entries[i].prenume %></td>
+                    <td><%= entries[i].email %></td>
+                    <td><%= entries[i].cnp %></td>
+                    <td><%= entries[i].telefon %></td>
+                    <td><%= entries[i].specializare %></td>
+                    <td><%= entries[i].speta %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include("../fragments/footer.ejs") %>

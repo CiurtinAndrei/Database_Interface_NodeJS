@@ -1,0 +1,51 @@
+<%- include("../fragments/header.ejs") %>
+
+
+
+
+<div>
+    <h2>Database Entries</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Contract</th>
+                <th>ID Avocat Ctr</th>
+                <th>ID Client Ctr</th>
+                <th>Valoare</th>
+                <th>Data Start</th>
+                <th>Data Sfarsit</th>
+                <th>Judecatorie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0; i < entries.length; i++) { %>
+                <% let data_incheiere = entries[i].data_sfarsit ? new Date(entries[i].data_sfarsit) : null;
+                    let zi_s = ["Luni", "Marti", "Miercuri", "Joi", "Vineri", "Sambata", "Duminica"];
+                    let data_adaugare = entries[i].data_start;
+                    if (data_incheiere) {
+                        let date_1 = new Date(data_incheiere);
+                        let timeStampVector = date_1.toString().split(" ");
+                        data_incheiere = timeStampVector[2] + "-" + timeStampVector[1] + "-" + timeStampVector[3] + "[" + zi_s[data_incheiere.getDay()] + "]";
+                    }
+
+                    let status = data_incheiere ? data_incheiere : "In desfasurare";
+
+                    let date_2 = new Date(data_adaugare);
+                    let timeStampVector = date_2.toString().split(" ");
+                    data_adaugare = timeStampVector[2] + "-" + timeStampVector[1] + "-" + timeStampVector[3] + "[" + zi_s[data_adaugare.getDay()] + "]";
+                %>
+                <tr>
+                    <td><%= entries[i].id_contract %></td>
+                    <td><%= entries[i].id_avocat_ctr %></td>
+                    <td><%= entries[i].id_client_ctr %></td>
+                    <td><%= entries[i].valoare %></td>
+                    <td><%= data_adaugare %></td>
+                    <td><%= status %></td>
+                    <td><%= entries[i].judecatorie %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<%- include("../fragments/footer.ejs") %>
