@@ -206,6 +206,71 @@ app.post('/create/contract', async (req, res) => {
     });
 });
 
+
+app.get('/edit/avocat/:id', function(req, res){
+    const avocatId = req.params.id;
+    client.query(
+        `SELECT * FROM avocat where id_avocat = $1`, [avocatId], function(queryErr, queryRes){
+            if(queryErr){
+                res.render("pages/eroare", {eroare:String(queryErr)});
+            }else{
+                //console.log(queryRes.rows);
+                res.render('pages/edit_avocat', {pageTitle: 'Welcome to My Homepage', result: queryRes.rows[0]});
+            }
+        });
+});
+
+app.post('/edit/avocat/action/:id', async (req, res) => {
+    const form = new formidable.IncomingForm({ multiples: false });
+
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Eroare');
+            return;
+        }
+
+        const {
+            nume,
+            prenume,
+            email,
+            cnp,
+            telefon,
+            specializare,
+            speta
+        } = fields;
+
+        const query = `
+        UPDATE avocat
+        SET nume = $1,
+            prenume = $2,
+            email = $3,
+            cnp = $4,
+            telefon = $5,
+            specializare = $6,
+            speta = $7
+        WHERE id_avocat = $8;
+        `;
+
+        const values = [nume, prenume, email, cnp, telefon, specializare, speta];
+
+        values.forEach((element, index) => {
+            const element_clean = String(element).replace(/[{}"]/g, '');
+            values[index] = element_clean;
+        });
+
+        values.push(req.params.id);
+
+        try {
+            await client.query(query, values);
+            res.redirect('/view/avocati'); // Redirect to the page displaying all entries
+        } catch (error) {
+            //console.error(error);
+            res.render("pages/eroare", {eroare:String(error.detail)});
+        }
+    });
+});
+
 app.post("/delete/avocat/:id", function(req, res){
     const avocatId = req.params.id;
     console.log('Deleting avocat with id:', avocatId);

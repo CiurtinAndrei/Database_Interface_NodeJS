@@ -28,6 +28,11 @@
                     <td><%= entries[i].specializare %></td>
                     <td><%= entries[i].speta %></td>
                     <td>
+                        <form action="/edit/avocat/<%= entries[i].id_avocat %>" method="get">
+                            <button type="submit">EDIT</button>
+                        </form>
+                    </td>
+                    <td>
                         <form action="/delete/avocat/<%= entries[i].id_avocat %>" method="post">
                             <button type="submit">DELETE</button>
                         </form>

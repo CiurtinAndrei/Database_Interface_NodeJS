@@ -1,0 +1,31 @@
+<%- include("../fragments/header.ejs") %>
+
+<div>
+    <h2>Create New Entry</h2>
+    <form action="/create/avocat" method="post" enctype="multipart/form-data">
+        <label for="nume">Nume:</label>
+        <input type="text" name="nume" required>
+
+        <label for="prenume">Prenume:</label>
+        <input type="text" name="prenume" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+
+        <label for="cnp">CNP:</label>
+        <input type="text" name="cnp" required>
+
+        <label for="telefon">Telefon:</label>
+        <input type="text" name="telefon" required>
+
+        <label for="specializare">Specializare:</label>
+        <input type="text" name="specializare" required>
+
+        <label for="speta">Speta:</label>
+        <input type="text" name="speta" required>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<%- include("../fragments/footer.ejs") %>
