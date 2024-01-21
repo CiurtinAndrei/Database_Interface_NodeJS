@@ -201,7 +201,7 @@ app.post('/create/contract', async (req, res) => {
         } catch (error) {
             console.error(error);
             //res.status(500).send('Eroare.');
-            res.render("pages/eroare", {eroare:String(error.detail)});
+            res.render("pages/eroare", {eroare:String(error)});
         }
     });
 });
@@ -401,8 +401,8 @@ app.post('/edit/contract/action/:id', async (req, res) => {
             await client.query(query, values);
             res.redirect('/view/contracte'); // Redirect to the page displaying all entries
         } catch (error) {
-            console.error(error);
-            res.render("pages/eroare", {eroare:String(error.detail)});
+            //console.error(error);
+            res.render("pages/eroare", {eroare:String(error)});
         }
     });
 });
