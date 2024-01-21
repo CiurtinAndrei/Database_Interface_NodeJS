@@ -1,30 +1,27 @@
 <%- include("../fragments/header.ejs") %>
 
 <div>
-    <h2>Create New Entry</h2>
-    <form action="/create/avocat" method="post" enctype="multipart/form-data">
+    <h2>Update Entry</h2>
+    <form action="/edit/client/action/<%= result.id_client %>" method="post" enctype="multipart/form-data">
         <label for="nume">Nume:</label>
-        <input type="text" name="nume" required>
+        <input type="text" name="nume" required value = "<%= result.nume %>">
 
         <label for="prenume">Prenume:</label>
-        <input type="text" name="prenume" required>
+        <input type="text" name="prenume" required value = "<%= result.prenume %>">
 
         <label for="email">Email:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email" required value = "<%= result.email %>">
 
         <label for="cnp">CNP:</label>
-        <input type="text" name="cnp" required>
+        <input type="text" name="cnp" required value = "<%= result.cnp %>">
 
         <label for="telefon">Telefon:</label>
-        <input type="text" name="telefon" required>
+        <input type="text" name="telefon" required value = "<%= result.telefon %>">
 
-        <label for="specializare">Specializare:</label>
-        <input type="text" name="specializare" required>
+        <label for="adresa">Adresa:</label>
+        <input type="text" name="adresa" required value = "<%= result.adresa %>">
 
-        <label for="speta">Speta:</label>
-        <input type="text" name="speta" required>
-
-        <button type="submit">Submit</button>
+        <button type="submit">Update</button>
     </form>
 </div>
 

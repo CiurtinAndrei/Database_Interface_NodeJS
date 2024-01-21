@@ -1,30 +1,52 @@
 <%- include("../fragments/header.ejs") %>
 
 <div>
-    <h2>Create New Entry</h2>
-    <form action="/create/avocat" method="post" enctype="multipart/form-data">
-        <label for="nume">Nume:</label>
-        <input type="text" name="nume" required>
+    <h2>Update Entry</h2>
+    <form action="/edit/contract/action/<%= result.id_contract %>" method="post" enctype="multipart/form-data">
+        <label for="id_avocat_ctr">ID Avocat Ctr:</label>
+        <input type="number" name="id_avocat_ctr" required value = "<%= result.id_avocat_ctr %>">
 
-        <label for="prenume">Prenume:</label>
-        <input type="text" name="prenume" required>
+        <label for="id_client_ctr">ID Client Ctr:</label>
+        <input type="number" name="id_client_ctr" required value = "<%= result.id_client_ctr %>">
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" required>
+        <label for="valoare">Valoare:</label>
+        <input type="number" name="valoare" required value = "<%= result.valoare %>">
 
-        <label for="cnp">CNP:</label>
-        <input type="text" name="cnp" required>
+        <label for="data_start">Data Start:</label>
+        <%
+        function monthNameToNumber(monthName) {
+            const date = new Date(`${monthName} 1, 2000`);
+            const monthNumber = date.getMonth() + 1; // Months are zero-based, so add 1
+            return monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
+        }
+        originalDate = new Date(result.data_start);
+        originalDate = originalDate.toString().split(" ");
+        const monthName = originalDate[1];
+        const numericMonth = monthNameToNumber(monthName);
+        const pickerDate = originalDate[3] + "-" + String(numericMonth) + "-" + originalDate[2]
+        %>
+        <input type="date" name="data_start" required value="<%= pickerDate %>">
 
-        <label for="telefon">Telefon:</label>
-        <input type="text" name="telefon" required>
+        <label for="data_sfarsit">Data Sfarsit:</label>
+        <%
+        function monthNameToNumber(monthName) {
+            const date = new Date(`${monthName} 1, 2000`);
+            const monthNumber = date.getMonth() + 1; // Months are zero-based, so add 1
+            return monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
+        }
+        originalDate2 = new Date(result.data_sfarsit);
+        originalDate2 = originalDate2.toString().split(" ");
+        const monthName2 = originalDate2[1];
+        const numericMonth2 = monthNameToNumber(monthName2);
+        const pickerDate2 = originalDate2[3] + "-" + String(numericMonth2) + "-" + originalDate2[2]
+        %>
+        <input type="date" name="data_sfarsit" value="<%= pickerDate2 %>">
 
-        <label for="specializare">Specializare:</label>
-        <input type="text" name="specializare" required>
 
-        <label for="speta">Speta:</label>
-        <input type="text" name="speta" required>
+        <label for="judecatorie">Judecatorie:</label>
+        <input type="text" name="judecatorie" required value = "<%= result.judecatorie %>">
 
-        <button type="submit">Submit</button>
+        <button type="submit">Update</button>
     </form>
 </div>
 

@@ -26,6 +26,11 @@
                     <td><%= entries[i].telefon %></td>
                     <td><%= entries[i].adresa %></td>
                     <td>
+                        <form action="/edit/client/<%= entries[i].id_client %>" method="get">
+                            <button type="submit">EDIT</button>
+                        </form>
+                    </td>
+                    <td>
                         <form action="/delete/client/<%= entries[i].id_client %>" method="post">
                             <button type="submit">DELETE</button>
                         </form>

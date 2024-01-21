@@ -29,7 +29,7 @@ app.get(["/view"], function(req, res){
 
 app.get(["/view/avocati"], function(req, res){
     client.query(
-        `SELECT * FROM avocat`, function(queryErr, queryRes){
+        `SELECT * FROM avocat ORDER BY id_avocat`, function(queryErr, queryRes){
             if(queryErr){
                 res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
@@ -41,7 +41,7 @@ app.get(["/view/avocati"], function(req, res){
 
 app.get(["/view/contracte"], function(req, res){
     client.query(
-        `SELECT * FROM contract`, function(queryErr, queryRes){
+        `SELECT * FROM contract ORDER BY id_contract`, function(queryErr, queryRes){
             if(queryErr){
                 res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
@@ -53,7 +53,7 @@ app.get(["/view/contracte"], function(req, res){
 
 app.get(["/view/clienti"], function(req, res){
     client.query(
-        `SELECT * FROM client`, function(queryErr, queryRes){
+        `SELECT * FROM client ORDER BY id_client`, function(queryErr, queryRes){
             if(queryErr){
                 res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
@@ -215,6 +215,9 @@ app.get('/edit/avocat/:id', function(req, res){
                 res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
                 //console.log(queryRes.rows);
+                if(queryRes.rowCount<=0){
+                    res.render("pages/eroare", {eroare:String("Nu exista.")});
+                }
                 res.render('pages/edit_avocat', {pageTitle: 'Welcome to My Homepage', result: queryRes.rows[0]});
             }
         });
@@ -266,6 +269,139 @@ app.post('/edit/avocat/action/:id', async (req, res) => {
             res.redirect('/view/avocati'); // Redirect to the page displaying all entries
         } catch (error) {
             //console.error(error);
+            res.render("pages/eroare", {eroare:String(error.detail)});
+        }
+    });
+});
+
+app.get('/edit/client/:id', function(req, res){
+    const clientId = req.params.id;
+    client.query(
+        `SELECT * FROM client where id_client = $1`, [clientId], function(queryErr, queryRes){
+            if(queryErr){
+                res.render("pages/eroare", {eroare:String(queryErr)});
+            }else{
+                //console.log(queryRes.rows);
+                if(queryRes.rowCount<=0){
+                    res.render("pages/eroare", {eroare:String("Nu exista.")});
+                }
+                res.render('pages/edit_client', {pageTitle: 'Welcome to My Homepage', result: queryRes.rows[0]});
+            }
+        });
+});
+
+app.post('/edit/client/action/:id', async (req, res) => {
+    const form = new formidable.IncomingForm({ multiples: false });
+
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            //console.error(err);
+            res.render("pages/eroare", {eroare:String(err)});
+            return;
+        }
+
+        const {
+            nume,
+            prenume,
+            email,
+            cnp,
+            telefon,
+            adresa
+        } = fields;
+
+        const query = `
+        UPDATE client
+        SET nume = $1,
+            prenume = $2,
+            email = $3,
+            cnp = $4,
+            telefon = $5,
+            adresa = $6
+        WHERE id_client = $7;
+        `;
+
+        const values = [nume, prenume, email, cnp, telefon, adresa];
+
+        values.forEach((element, index) => {
+            const element_clean = String(element).replace(/[{}"]/g, '');
+            values[index] = element_clean;
+        });
+
+        values.push(req.params.id);
+
+        try {
+            await client.query(query, values);
+            res.redirect('/view/clienti'); // Redirect to the page displaying all entries
+        } catch (error) {
+            console.error(error);
+            res.render("pages/eroare", {eroare:String(error.detail)});
+        }
+    });
+});
+
+app.get('/edit/contract/:id', function(req, res){
+    const contractId = req.params.id;
+    client.query(
+        `SELECT * FROM contract where id_contract = $1`, [contractId], function(queryErr, queryRes){
+            if(queryErr){
+                res.render("pages/eroare", {eroare:String(queryErr)});
+            }else{
+                //console.log(queryRes.rows);
+                if(queryRes.rowCount<=0){
+                    res.render("pages/eroare", {eroare:String("Nu exista.")});
+                }
+                res.render('pages/edit_contract', {pageTitle: 'Welcome to My Homepage', result: queryRes.rows[0]});
+            }
+        });
+});
+
+app.post('/edit/contract/action/:id', async (req, res) => {
+    const form = new formidable.IncomingForm({ multiples: false });
+
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Eroare');
+            return;
+        }
+
+        const {
+            id_avocat_ctr,
+            id_client_ctr,
+            valoare,
+            data_start,
+            data_sfarsit,
+            judecatorie
+        } = fields;
+
+        const query = `
+        UPDATE contract
+        SET id_avocat_ctr = $1,
+            id_client_ctr = $2,
+            valoare = $3,
+            data_start = $4,
+            data_sfarsit = $5,
+            judecatorie = $6
+        WHERE id_contract = $7;
+        `;
+
+        const values = [id_avocat_ctr, id_client_ctr, valoare, data_start, data_sfarsit, judecatorie];
+
+        values.forEach((element, index) => {
+            const element_clean = String(element).replace(/[{}"]/g, '');
+            values[index] = element_clean;
+            if(index == 4 && element_clean == ''){
+                values[index] = null;
+            }
+        });
+
+        values.push(req.params.id);
+
+        try {
+            await client.query(query, values);
+            res.redirect('/view/contracte'); // Redirect to the page displaying all entries
+        } catch (error) {
+            console.error(error);
             res.render("pages/eroare", {eroare:String(error.detail)});
         }
     });

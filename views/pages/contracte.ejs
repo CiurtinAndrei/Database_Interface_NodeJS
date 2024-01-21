@@ -44,6 +44,11 @@
                     <td><%= status %></td>
                     <td><%= entries[i].judecatorie %></td>
                     <td>
+                        <form action="/edit/contract/<%= entries[i].id_contract %>" method="get">
+                            <button type="submit">EDIT</button>
+                        </form>
+                    </td>
+                    <td>
                         <form action="/delete/contract/<%= entries[i].id_contract %>" method="post">
                             <button type="submit">DELETE</button>
                         </form>
