@@ -179,11 +179,17 @@ app.get('/add/contract', async (req, res) => {
         const avocatList = await client.query('SELECT id_avocat, nume, prenume FROM avocat');
         const clientList = await client.query('SELECT id_client, nume, prenume FROM client');
 
-        res.render('pages/add_contract', {
-            pageTitle: 'Welcome to My Homepage',
-            avocatList: avocatList.rows,
-            clientList: clientList.rows
-        });
+        if (avocatList.rows.length === 0 || clientList.rows.length === 0) {
+            res.render('pages/eroare', {
+                eroare: 'There must be at least one "client" and one "avocat" to create a contract.'
+            });
+        } else {
+            res.render('pages/add_contract', {
+                pageTitle: 'Welcome to My Homepage',
+                avocatList: avocatList.rows,
+                clientList: clientList.rows
+            });
+        }
     } catch (error) {
         res.render("pages/eroare", { eroare: String(error) });
     }
