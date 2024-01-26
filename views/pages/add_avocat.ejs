@@ -1,7 +1,13 @@
 <%- include("../fragments/header.ejs") %>
-
-<div>
-    <h2>Create New Entry</h2>
+<body>
+    <div class="button-container">
+        <a href="/view/avocati" class="retavo-button">Cancel and return to view page</a>
+        
+    
+    </div>    
+  
+<div class="form-container">
+    <h2>Create New "Avocat"</h2>
     <form action="/create/avocat" method="post" enctype="multipart/form-data">
         <label for="nume">Nume:</label>
         <input type="text" name="nume" required>
@@ -27,5 +33,5 @@
         <button type="submit">Submit</button>
     </form>
 </div>
-
+</body>
 <%- include("../fragments/footer.ejs") %>

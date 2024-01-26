@@ -1,15 +1,32 @@
 <%- include("../fragments/header.ejs") %>
+<body>
+    <div class="button-container">
+        <a href="/view/contracte" class="retcontr-button">Cancel and return to view page</a>
+        
+    
+    </div>    
+    <div class="form-container">
+        <h2>Edit "Contract"</h2>
+        <form action="/edit/contract/action/<%= result.id_contract %>" method="post" enctype="multipart/form-data">
+            <label for="id_avocat_ctr">Avocat:</label>
+            <select name="id_avocat_ctr" required>
+                <% for (let i = 0; i < avocatList.length; i++) { %>
+                    <option value="<%= avocatList[i].id_avocat %>" <%= (avocatList[i].id_avocat === result.id_avocat_ctr) ? 'selected' : '' %>>
+                        <%= avocatList[i].id_avocat %>: <%= avocatList[i].nume %> <%= avocatList[i].prenume %>
+                    </option>
+                <% } %>
+            </select>
 
-<div>
-    <h2>Update Entry</h2>
-    <form action="/edit/contract/action/<%= result.id_contract %>" method="post" enctype="multipart/form-data">
-        <label for="id_avocat_ctr">ID Avocat Ctr:</label>
-        <input type="number" name="id_avocat_ctr" required value = "<%= result.id_avocat_ctr %>">
+            <label for="id_client_ctr">Client:</label>
+            <select name="id_client_ctr" required>
+                <% for (let i = 0; i < clientList.length; i++) { %>
+                    <option value="<%= clientList[i].id_client %>" <%= (clientList[i].id_client === result.id_client_ctr) ? 'selected' : '' %>>
+                        <%= clientList[i].id_client %> : <%= clientList[i].nume %> <%= clientList[i].prenume %>
+                    </option>
+                <% } %>
+            </select>
 
-        <label for="id_client_ctr">ID Client Ctr:</label>
-        <input type="number" name="id_client_ctr" required value = "<%= result.id_client_ctr %>">
-
-        <label for="valoare">Valoare:</label>
+        <label for="valoare">Valoare (EUR):</label>
         <input type="number" name="valoare" required value = "<%= result.valoare %>">
 
         <label for="data_start">Data Start:</label>
@@ -34,11 +51,15 @@
             const monthNumber = date.getMonth() + 1; // Months are zero-based, so add 1
             return monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
         }
-        originalDate2 = new Date(result.data_sfarsit);
-        originalDate2 = originalDate2.toString().split(" ");
-        const monthName2 = originalDate2[1];
-        const numericMonth2 = monthNameToNumber(monthName2);
-        const pickerDate2 = originalDate2[3] + "-" + String(numericMonth2) + "-" + originalDate2[2]
+        if(result.data_sfarsit != null){
+            originalDate2 = new Date(result.data_sfarsit);
+            originalDate2 = originalDate2.toString().split(" ");
+            const monthName2 = originalDate2[1];
+            const numericMonth2 = monthNameToNumber(monthName2);
+            const pickerDate2 = originalDate2[3] + "-" + String(numericMonth2) + "-" + originalDate2[2]
+        }
+        else var pickerDate2 = null;
+        
         %>
         <input type="date" name="data_sfarsit" value="<%= pickerDate2 %>">
 
@@ -49,5 +70,6 @@
         <button type="submit">Update</button>
     </form>
 </div>
+</body>
 
 <%- include("../fragments/footer.ejs") %>

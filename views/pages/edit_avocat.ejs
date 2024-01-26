@@ -1,7 +1,13 @@
 <%- include("../fragments/header.ejs") %>
-
-<div>
-    <h2>Update Entry</h2>
+<body>
+    <div class="button-container">
+        <a href="/view/avocati" class="retavo-button">Cancel and return to view page</a>
+        
+    
+    </div>    
+ 
+<div class="form-container">
+    <h2>Update "Avocat"</h2>
     <form action="/edit/avocat/action/<%= result.id_avocat %>" method="post" enctype="multipart/form-data">
         <label for="nume">Nume:</label>
         <input type="text" name="nume" required value = "<%= result.nume %>">
@@ -27,5 +33,6 @@
         <button type="submit">Update</button>
     </form>
 </div>
+</body>
 
 <%- include("../fragments/footer.ejs") %>

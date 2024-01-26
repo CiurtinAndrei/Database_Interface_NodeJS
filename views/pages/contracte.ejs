@@ -1,17 +1,27 @@
 <%- include("../fragments/header.ejs") %>
 
+<body>
+    <div class="button-container">
+        <a href="/add/contract" class="addcontr-button">New entry....</a>
+        <a href="/view" class="return-button">Change table</a>
+        
+    
+    </div> 
 
 
-
-<div>
-    <h2>Database Entries</h2>
+<div class="table-container">
+    <h2>Database Entries of "Contract"</h2>
     <table border="1">
         <thead>
             <tr>
                 <th>ID Contract</th>
                 <th>ID Avocat Ctr</th>
+                <th>Nume Avocat</th>
+                <th>Prenume Avocat</th>
                 <th>ID Client Ctr</th>
-                <th>Valoare</th>
+                <th>Nume Client</th>
+                <th>Prenume Client</th>
+                <th>Valoare (EUR)</th>
                 <th>Data Start</th>
                 <th>Data Sfarsit</th>
                 <th>Judecatorie</th>
@@ -38,7 +48,11 @@
                 <tr>
                     <td><%= entries[i].id_contract %></td>
                     <td><%= entries[i].id_avocat_ctr %></td>
+                    <td><%= entries[i].nume_avocat %></td>
+                    <td><%= entries[i].prenume_avocat %></td>
                     <td><%= entries[i].id_client_ctr %></td>
+                    <td><%= entries[i].nume_client %></td>
+                    <td><%= entries[i].prenume_client %></td>
                     <td><%= entries[i].valoare %></td>
                     <td><%= data_adaugare %></td>
                     <td><%= status %></td>
@@ -58,5 +72,5 @@
         </tbody>
     </table>
 </div>
-
-<%- include("../fragments/footer.ejs") %>
+</body>  
+<%- include("../fragments/footer.ejs") %>   

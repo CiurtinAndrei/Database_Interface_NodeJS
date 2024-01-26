@@ -1,15 +1,33 @@
 <%- include("../fragments/header.ejs") %>
+<body>
+    <div class="button-container">
+        <a href="/view/contracte" class="retcontr-button">Cancel and return to view page</a>
+        
+    
+    </div>    
+  
+    <div class="form-container">
+        <h2>Create New "Contract"</h2>
+        <form action="/create/contract" method="post" enctype="multipart/form-data">
+            <label for="id_avocat_ctr">Avocat:</label>
+            <select name="id_avocat_ctr" required>
+                <% for (let i = 0; i < avocatList.length; i++) { %>
+                    <option value="<%= avocatList[i].id_avocat %>">
+                        <%= avocatList[i].id_avocat %>: <%= avocatList[i].nume %> <%= avocatList[i].prenume %>
+                    </option>
+                <% } %>
+            </select>
 
-<div>
-    <h2>Create New Entry</h2>
-    <form action="/create/contract" method="post" enctype="multipart/form-data">
-        <label for="id_avocat_ctr">ID Avocat:</label>
-        <input type="number" name="id_avocat_ctr" required>
+            <label for="id_client_ctr">Client:</label>
+            <select name="id_client_ctr" required>
+                <% for (let i = 0; i < clientList.length; i++) { %>
+                    <option value="<%= clientList[i].id_client %>">
+                        <%= clientList[i].id_client %> : <%= clientList[i].nume %> <%= clientList[i].prenume %>
+                    </option>
+                <% } %>
+            </select>
 
-        <label for="id_client_ctr">ID Client:</label>
-        <input type="number" name="id_client_ctr" required>
-
-        <label for="valoare">Valoare:</label>
+        <label for="valoare">Valoare (EUR):</label>
         <input type="number" name="valoare" step="0.01" required>
 
         <label for="data_start">Data Start:</label>
@@ -24,6 +42,7 @@
         <button type="submit">Submit</button>
     </form>
 </div>
+</body>
 
 
 <%- include("../fragments/footer.ejs") %>

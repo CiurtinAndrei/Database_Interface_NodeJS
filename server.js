@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require('path');
 const {Client} = require('pg');
 const formidable = require('formidable');
-const PORT= 8080;
+const PORT= 1309;
 
 var client= new Client({database:"proiect_pibd",
         user:"andreic",
@@ -27,6 +27,12 @@ app.get(["/view"], function(req, res){
         
 });
 
+app.get(["/add"], function(req, res){
+    
+    res.render("pages/add", { pageTitle: 'Welcome to My Homepage', message: 'Hello, world!' });
+        
+});
+
 app.get(["/view/avocati"], function(req, res){
     client.query(
         `SELECT * FROM avocat ORDER BY id_avocat`, function(queryErr, queryRes){
@@ -39,16 +45,28 @@ app.get(["/view/avocati"], function(req, res){
         });
 });
 
-app.get(["/view/contracte"], function(req, res){
+app.get("/view/contracte", function (req, res) {
     client.query(
-        `SELECT * FROM contract ORDER BY id_contract`, function(queryErr, queryRes){
-            if(queryErr){
-                res.render("pages/eroare", {eroare:String(queryErr)});
-            }else{
-                //console.log(queryRes.rows);
-                res.render("pages/contracte", {pageTitle: 'Welcome to My Homepage', entries: queryRes.rows, nr_rez:queryRes.rowCount});
+        `SELECT 
+            c.id_contract, c.id_avocat_ctr, a.nume AS nume_avocat, a.prenume AS prenume_avocat,
+            c.id_client_ctr, cl.nume AS nume_client, cl.prenume AS prenume_client,
+            c.valoare, c.data_start, c.data_sfarsit, c.judecatorie
+         FROM contract c
+         JOIN avocat a ON c.id_avocat_ctr = a.id_avocat
+         JOIN client cl ON c.id_client_ctr = cl.id_client
+         ORDER BY c.id_contract`,
+        function (queryErr, queryRes) {
+            if (queryErr) {
+                res.render("pages/eroare", { eroare: String(queryErr) });
+            } else {
+                res.render("pages/contracte", {
+                    pageTitle: 'Welcome to My Homepage',
+                    entries: queryRes.rows,
+                    nr_rez: queryRes.rowCount
+                });
             }
-        });
+        }
+    );
 });
 
 app.get(["/view/clienti"], function(req, res){
@@ -156,8 +174,19 @@ app.post('/create/client', async (req, res) => {
     });
 });
 
-app.get('/add/contract', (req, res) => {
-    res.render('pages/add_contract', {pageTitle: 'Welcome to My Homepage'});
+app.get('/add/contract', async (req, res) => {
+    try {
+        const avocatList = await client.query('SELECT id_avocat, nume, prenume FROM avocat');
+        const clientList = await client.query('SELECT id_client, nume, prenume FROM client');
+
+        res.render('pages/add_contract', {
+            pageTitle: 'Welcome to My Homepage',
+            avocatList: avocatList.rows,
+            clientList: clientList.rows
+        });
+    } catch (error) {
+        res.render("pages/eroare", { eroare: String(error) });
+    }
 });
 
 app.post('/create/contract', async (req, res) => {
@@ -339,20 +368,26 @@ app.post('/edit/client/action/:id', async (req, res) => {
     });
 });
 
-app.get('/edit/contract/:id', function(req, res){
+app.get('/edit/contract/:id', async (req, res) => {
     const contractId = req.params.id;
-    client.query(
-        `SELECT * FROM contract where id_contract = $1`, [contractId], function(queryErr, queryRes){
-            if(queryErr){
-                res.render("pages/eroare", {eroare:String(queryErr)});
-            }else{
-                //console.log(queryRes.rows);
-                if(queryRes.rowCount<=0){
-                    res.render("pages/eroare", {eroare:String("Nu exista.")});
-                }
-                res.render('pages/edit_contract', {pageTitle: 'Welcome to My Homepage', result: queryRes.rows[0]});
-            }
+    try {
+        const avocatList = await client.query('SELECT id_avocat, nume, prenume FROM avocat');
+        const clientList = await client.query('SELECT id_client, nume, prenume FROM client');
+        const contractResult = await client.query('SELECT * FROM contract WHERE id_contract = $1', [contractId]);
+
+        if (contractResult.rowCount <= 0) {
+            res.render("pages/eroare", { eroare: "Nu exista." });
+        }
+
+        res.render('pages/edit_contract', {
+            pageTitle: 'Welcome to My Homepage',
+            avocatList: avocatList.rows,
+            clientList: clientList.rows,
+            result: contractResult.rows[0]
         });
+    } catch (error) {
+        res.render("pages/eroare", { eroare: String(error) });
+    }
 });
 
 app.post('/edit/contract/action/:id', async (req, res) => {

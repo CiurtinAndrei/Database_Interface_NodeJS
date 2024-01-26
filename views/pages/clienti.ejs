@@ -1,7 +1,15 @@
 <%- include("../fragments/header.ejs") %>
+<body>
+    <div class="button-container">
+        <a href="/add/client" class="addcli-button">New entry....</a>
+        <a href="/view" class="return-button">Change table</a>
+        
+    
+    </div>    
+  
+<div class="table-container">
 
-<div>
-    <h2>Database Entries</h2>
+    <h2>Database Entries of "Client"</h2>
     <table border="1">
         <thead>
             <tr>
@@ -40,5 +48,6 @@
         </tbody>
     </table>
 </div>
+</body>
 
 <%- include("../fragments/footer.ejs") %>
