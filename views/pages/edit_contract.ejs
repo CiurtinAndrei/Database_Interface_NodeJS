@@ -51,14 +51,15 @@
             const monthNumber = date.getMonth() + 1; // Months are zero-based, so add 1
             return monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
         }
+        var pickerDate2 = null;
         if(result.data_sfarsit != null){
             originalDate2 = new Date(result.data_sfarsit);
             originalDate2 = originalDate2.toString().split(" ");
             const monthName2 = originalDate2[1];
             const numericMonth2 = monthNameToNumber(monthName2);
-            const pickerDate2 = originalDate2[3] + "-" + String(numericMonth2) + "-" + originalDate2[2]
+            pickerDate2 = originalDate2[3] + "-" + String(numericMonth2) + "-" + originalDate2[2]
         }
-        else var pickerDate2 = null;
+            
         
         %>
         <input type="date" name="data_sfarsit" value="<%= pickerDate2 %>">
