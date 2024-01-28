@@ -18,12 +18,12 @@ app.use("/resources", express.static(__dirname+"/resources"));
 app.use("/node_modules", express.static(__dirname+"/node_modules"));
 
 app.get(["/"], function(req, res){
-    res.render("pages/home", { pageTitle: 'Welcome to My Homepage', message: 'Hello, world!' });
+    res.render("pages/home", { pageTitle: 'Welcome to Goodman &CO'});
 });
 
 app.get(["/view"], function(req, res){
     
-    res.render("pages/view", { pageTitle: 'Welcome to My Homepage', message: 'Hello, world!' });
+    res.render("pages/view", { pageTitle: 'Select a Table'});
         
 });
 
@@ -40,7 +40,7 @@ app.get(["/view/avocati"], function(req, res){
                 res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
                 //console.log(queryRes.rows);
-                res.render("pages/avocati", {pageTitle: 'Welcome to My Homepage', entries: queryRes.rows, nr_rez:queryRes.rowCount});
+                res.render("pages/avocati", {pageTitle: 'Avocati', entries: queryRes.rows, nr_rez:queryRes.rowCount});
             }
         });
 });
@@ -60,7 +60,7 @@ app.get("/view/contracte", function (req, res) {
                 res.render("pages/eroare", { eroare: String(queryErr) });
             } else {
                 res.render("pages/contracte", {
-                    pageTitle: 'Welcome to My Homepage',
+                    pageTitle: 'Contracte',
                     entries: queryRes.rows,
                     nr_rez: queryRes.rowCount
                 });
@@ -76,13 +76,13 @@ app.get(["/view/clienti"], function(req, res){
                 res.render("pages/eroare", {eroare:String(queryErr)});
             }else{
                 //console.log(queryRes.rows);
-                res.render("pages/clienti", {pageTitle: 'Welcome to My Homepage', entries: queryRes.rows, nr_rez:queryRes.rowCount});
+                res.render("pages/clienti", {pageTitle: 'Clienti', entries: queryRes.rows, nr_rez:queryRes.rowCount});
             }
         });
 });
 
 app.get('/add/avocat', (req, res) => {
-    res.render('pages/add_avocat', {pageTitle: 'Welcome to My Homepage'});
+    res.render('pages/add_avocat', {pageTitle: 'Add a New Entry'});
 });
 
 app.post('/create/avocat', async (req, res) => {
@@ -129,7 +129,7 @@ app.post('/create/avocat', async (req, res) => {
 });
 
 app.get('/add/client', (req, res) => {
-    res.render('pages/add_client', {pageTitle: 'Welcome to My Homepage'});
+    res.render('pages/add_client', {pageTitle: 'Add a New Entry'});
 });
 
 app.post('/create/client', async (req, res) => {
@@ -185,7 +185,7 @@ app.get('/add/contract', async (req, res) => {
             });
         } else {
             res.render('pages/add_contract', {
-                pageTitle: 'Welcome to My Homepage',
+                pageTitle: 'Add a New Entry',
                 avocatList: avocatList.rows,
                 clientList: clientList.rows
             });
@@ -253,7 +253,7 @@ app.get('/edit/avocat/:id', function(req, res){
                 if(queryRes.rowCount<=0){
                     res.render("pages/eroare", {eroare:String("Nu exista.")});
                 }
-                res.render('pages/edit_avocat', {pageTitle: 'Welcome to My Homepage', result: queryRes.rows[0]});
+                res.render('pages/edit_avocat', {pageTitle: 'Modify this Entry', result: queryRes.rows[0]});
             }
         });
 });
@@ -320,7 +320,7 @@ app.get('/edit/client/:id', function(req, res){
                 if(queryRes.rowCount<=0){
                     res.render("pages/eroare", {eroare:String("Nu exista.")});
                 }
-                res.render('pages/edit_client', {pageTitle: 'Welcome to My Homepage', result: queryRes.rows[0]});
+                res.render('pages/edit_client', {pageTitle: 'Modify this Entry', result: queryRes.rows[0]});
             }
         });
 });
@@ -386,7 +386,7 @@ app.get('/edit/contract/:id', async (req, res) => {
         }
 
         res.render('pages/edit_contract', {
-            pageTitle: 'Welcome to My Homepage',
+            pageTitle: 'Modify this Entry',
             avocatList: avocatList.rows,
             clientList: clientList.rows,
             result: contractResult.rows[0]
