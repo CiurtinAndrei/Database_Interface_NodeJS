@@ -120,7 +120,7 @@ app.post('/create/avocat', async (req, res) => {
 
         try {
             await client.query(query, values);
-            res.redirect('/view/avocati'); // Redirect to the page displaying all entries
+            res.redirect('/view/avocati'); 
         } catch (error) {
             //console.error(error);
             res.render("pages/eroare", {eroare:String(error.detail)});
@@ -166,7 +166,7 @@ app.post('/create/client', async (req, res) => {
 
         try {
             await client.query(query, values);
-            res.redirect('/view/clienti'); // Redirect to the page displaying all entries
+            res.redirect('/view/clienti'); 
         } catch (error) {
             //console.error(error);
             res.render("pages/eroare", {eroare:String(error.detail)});
@@ -232,7 +232,7 @@ app.post('/create/contract', async (req, res) => {
 
         try {
             await client.query(query, values);
-            res.redirect('/view/contracte'); // Redirect to the page displaying all entries
+            res.redirect('/view/contracte'); 
         } catch (error) {
             console.error(error);
             //res.status(500).send('Eroare.');
@@ -301,7 +301,7 @@ app.post('/edit/avocat/action/:id', async (req, res) => {
 
         try {
             await client.query(query, values);
-            res.redirect('/view/avocati'); // Redirect to the page displaying all entries
+            res.redirect('/view/avocati'); 
         } catch (error) {
             //console.error(error);
             res.render("pages/eroare", {eroare:String(error.detail)});
@@ -366,7 +366,7 @@ app.post('/edit/client/action/:id', async (req, res) => {
 
         try {
             await client.query(query, values);
-            res.redirect('/view/clienti'); // Redirect to the page displaying all entries
+            res.redirect('/view/clienti'); 
         } catch (error) {
             console.error(error);
             res.render("pages/eroare", {eroare:String(error.detail)});
@@ -440,7 +440,7 @@ app.post('/edit/contract/action/:id', async (req, res) => {
 
         try {
             await client.query(query, values);
-            res.redirect('/view/contracte'); // Redirect to the page displaying all entries
+            res.redirect('/view/contracte'); 
         } catch (error) {
             //console.error(error);
             res.render("pages/eroare", {eroare:String(error)});
