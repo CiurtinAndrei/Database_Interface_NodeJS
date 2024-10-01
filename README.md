@@ -6,3 +6,6 @@ This is a CRUD web application developed in **Node.js** with the use of **Expres
 
 The database for this project is relational and is implemented with the use of **PostgreSQL** ver. **16.1**. The connection between the Express server and the PG database is not ORM based, but instead it makes use of the **pg** module with full support for database operations using SQL queries.
 
+***
+
+This project was developed with the help of https://github.com/AlexMihai1126
